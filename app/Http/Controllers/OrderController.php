@@ -107,11 +107,11 @@ class OrderController extends Controller
             'status' => 'required|integer',
             'order_id' => 'required|integer'
         ]);
-
         
-        //dump($order);
-        if (!Gate::authorize('isAdmin')){
+        
+        if (!Gate::check('isAdmin')){
             $order = Order::where('user_id', '=', Auth::id())->where('id', '=', $request->order_id)->firstOrFail();
+            
             $this->authorize('update', $order);
             
             $order->update(['status' => $request->status]);
